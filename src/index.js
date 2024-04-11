@@ -1,5 +1,8 @@
 // Your code here
 
+
+let url = ''
+
 const poster = document.getElementById('poster')
 const title = document.getElementById('title')
 const runTime = document.getElementById('runtime')
