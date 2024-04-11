@@ -7,7 +7,7 @@ const showTime = document.getElementById('showtime')
 const tickets = document.getElementById('ticket-num')
 const description = document.getElementById('film-info')
 
-function getFirstMovieDetails() {
+function getMovieDetails() {
     fetch('http://localhost:3000/films/1')
     .then(resp => resp.json())
     .then(film => {
@@ -24,7 +24,7 @@ function getFirstMovieDetails() {
     })
     
 }
-getFirstMovieDetails()
+getMovieDetails()
 
 function getMovieTitles() {
     const filmList = document.querySelector('#films')
@@ -44,3 +44,18 @@ function getMovieTitles() {
    
 }
 getMovieTitles()
+
+//const remTickets = film.capacity - film.tickets_sold
+
+function clickMe() {
+    const button = document.getElementById('buy-ticket')
+
+    button.addEventListener("click", e => {
+        fetch("http://localhost:3000/films/:id", () => {
+            
+        })
+    })
+    
+    
+}
+clickMe()
