@@ -36,6 +36,7 @@ function getMovieTitles() {
             const list = document.createElement('li')
             list.innerHTML = `
                 <li>${data[i].title}</li>
+                <button id="delete">delete</button>
             `
             filmList.appendChild(list)
         }
@@ -45,17 +46,61 @@ function getMovieTitles() {
 }
 getMovieTitles()
 
-//const remTickets = film.capacity - film.tickets_sold
-
-function clickMe() {
-    const button = document.getElementById('buy-ticket')
-
-    button.addEventListener("click", e => {
-        fetch("http://localhost:3000/films/:id", () => {
-            
-        })
+function buyTicket(films) {
+    fetch(`http://localhost:3000/films/${films.id}`, {
+        method : 'PATCH',
+        headers : {
+            'Content-Type': 'application/json'
+        },
+        body : JSON.stringify(films)
     })
-    
-    
+    .then(resp => resp.json())
+    .then(updatedFilms => {
+        console.log(updatedFilms);
+      
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle errors appropriately
+    });
 }
-clickMe()
+
+const button = document.querySelector('#buy-ticket');
+let films = {
+    id: 1, 
+    capacity: 30, 
+    tickets_sold: 27 
+};
+
+button.addEventListener('click', () => {
+    let remTicketsElement = document.querySelector('#ticket-num');
+    let remTickets = parseInt(remTicketsElement.textContent); // Parse the text content to a number
+    if (remTickets > 0) {
+        remTickets -= 1;
+        remTicketsElement.textContent = remTickets;
+        films.tickets_sold += 1; // Update tickets sold
+        buyTicket(films); // Send PATCH request
+    } else {
+        alert('Movie Sold Out');
+    }
+});
+
+function deleteFilms(id) {
+    fetch(`http://localhost:3000/films/${id}`, {
+        method : 'DELETE',
+        headers : {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(resp => resp.json())
+    .then(films => console.log(films))
+}
+
+const deletebtn = document.querySelector('#delete')
+
+deletebtn.addEventListener('click', () =>{
+    list.innerHTML = ''
+    deleteFilms(films.id)
+
+})
+
