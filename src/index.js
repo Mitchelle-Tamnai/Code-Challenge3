@@ -47,3 +47,62 @@ function getMovieTitles() {
    
 }
 getMovieTitles()
+
+function buyTicket(films) {
+    fetch(`http://localhost:3000/films/${films.id}`, {
+        method : 'PATCH',
+        headers : {
+            'Content-Type': 'application/json'
+        },
+        body : JSON.stringify(films)
+    })
+    .then(resp => resp.json())
+    .then(updatedFilms => {
+        console.log(updatedFilms);
+      
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle errors appropriately
+    });
+}
+
+const button = document.querySelector('#buy-ticket');
+let films = {
+    id: 1, 
+    capacity: 30, 
+    tickets_sold: 27 
+};
+
+button.addEventListener('click', () => {
+    let remTicketsElement = document.querySelector('#ticket-num');
+    let remTickets = parseInt(remTicketsElement.textContent); // Parse the text content to a number
+    if (remTickets > 0) {
+        remTickets -= 1;
+        remTicketsElement.textContent = remTickets;
+        films.tickets_sold += 1; // Update tickets sold
+        buyTicket(films); // Send PATCH request
+    } else {
+        alert('Movie Sold Out');
+    }
+});
+
+function deleteFilms(id) {
+    fetch(`http://localhost:3000/films/${id}`, {
+        method : 'DELETE',
+        headers : {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(resp => resp.json())
+    .then(films => console.log(films))
+}
+
+const deletebtn = document.querySelector('#delete')
+
+deletebtn.addEventListener('click', () =>{
+    list.innerHTML = ''
+    deleteFilms(films.id)
+
+})
+
