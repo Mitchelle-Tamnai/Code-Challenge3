@@ -39,6 +39,7 @@ function getMovieTitles() {
             const list = document.createElement('li')
             list.innerHTML = `
                 <li>${data[i].title}</li>
+                <button id="delete">delete</button>
             `
             filmList.appendChild(list)
         }
